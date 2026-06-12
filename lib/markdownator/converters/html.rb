@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative "html_renderer"
+
 module Markdownator
   module Converters
-    # Converts HTML into Markdown using reverse_markdown (Nokogiri-backed).
+    # Converts HTML into Markdown by walking the Nokogiri node tree.
     class Html < Base
       def accepts?(_io, stream_info)
         matches?(stream_info, extensions: %w[html htm], mimetypes: %w[text/html application/xhtml+xml])
@@ -15,8 +17,10 @@ module Markdownator
 
       # Shared so other container converters (EPUB) can reuse HTML conversion.
       def self.html_to_markdown(html)
-        Markdownator.require_optional("reverse_markdown", feature: "HTML conversion")
-        ReverseMarkdown.convert(html, unknown_tags: :bypass, github_flavored: true).strip
+        Markdownator.require_optional("nokogiri", feature: "HTML conversion")
+        doc = Nokogiri::HTML(html)
+        root = doc.at_css("body") || doc.root || doc
+        HtmlRenderer.new.render(root)
       end
 
       def self.extract_title(html)

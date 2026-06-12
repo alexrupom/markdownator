@@ -13,13 +13,13 @@ libraries **lazily**, so you only install the gems for the formats you actually 
 | Plain text / Markdown | `.txt`, `.md` | — (built in) |
 | CSV | `.csv` | — (built in) |
 | JSON | `.json` | — (built in) |
-| HTML | `.html`, `.htm` | `reverse_markdown` (+ `nokogiri`) |
+| HTML | `.html`, `.htm` | `nokogiri` |
 | XML | `.xml` | `nokogiri` |
 | Word | `.docx` | `rubyzip`, `nokogiri` |
 | Excel | `.xlsx` | `roo` |
 | PowerPoint | `.pptx` | `rubyzip`, `nokogiri` |
 | PDF | `.pdf` | `pdf-reader` |
-| EPUB | `.epub` | `rubyzip`, `nokogiri`, `reverse_markdown` |
+| EPUB | `.epub` | `rubyzip`, `nokogiri` |
 | ZIP (recurses) | `.zip` | `rubyzip` |
 | Images (metadata) | `.jpg`, `.png`, `.tiff`, … | `exifr` (for EXIF) |
 
@@ -39,7 +39,6 @@ gem "pdf-reader"      # PDF
 gem "roo"             # XLSX
 gem "rubyzip"         # DOCX, PPTX, EPUB, ZIP
 gem "nokogiri"        # HTML, XML, DOCX, PPTX, EPUB
-gem "reverse_markdown" # HTML, EPUB
 gem "exifr"           # image EXIF
 ```
 

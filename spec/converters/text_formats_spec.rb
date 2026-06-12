@@ -43,12 +43,46 @@ RSpec.describe "Text-based converters" do
   end
 
   describe Markdownator::Converters::Html do
-    it "converts HTML to Markdown and extracts the title" do
+    it "converts headings and paragraphs and extracts the title" do
       html = "<html><head><title>Doc</title></head><body><h1>Hi</h1><p>Body</p></body></html>"
       result = convert(html, "html")
 
       expect(result.markdown).to eq("# Hi\n\nBody")
       expect(result.title).to eq("Doc")
+    end
+
+    it "renders inline emphasis, links, and images" do
+      html = "<p>See <strong>this</strong> and <em>that</em>, " \
+             'a <a href="https://x.test">link</a> and <img src="a.png" alt="pic">.</p>'
+
+      expect(convert(html, "html").markdown)
+        .to eq("See **this** and _that_, a [link](https://x.test) and ![pic](a.png).")
+    end
+
+    it "renders unordered and ordered lists" do
+      html = "<ul><li>one</li><li>two</li></ul><ol><li>first</li><li>second</li></ol>"
+
+      expect(convert(html, "html").markdown)
+        .to eq("- one\n- two\n\n1. first\n2. second")
+    end
+
+    it "renders inline code, code blocks, blockquotes, and tables" do
+      html = "<p>Use <code>x</code>.</p>" \
+             "<pre><code class=\"language-ruby\">puts 1</code></pre>" \
+             "<blockquote><p>quoted</p></blockquote>" \
+             "<table><tr><th>A</th><th>B</th></tr><tr><td>1</td><td>2</td></tr></table>"
+      markdown = convert(html, "html").markdown
+
+      expect(markdown).to include("Use `x`.")
+      expect(markdown).to include("```ruby\nputs 1\n```")
+      expect(markdown).to include("> quoted")
+      expect(markdown).to include("| A | B |\n| --- | --- |\n| 1 | 2 |")
+    end
+
+    it "collapses source whitespace while keeping explicit line breaks" do
+      html = "<p>first\n   line<br>second line</p>"
+
+      expect(convert(html, "html").markdown).to eq("first line\nsecond line")
     end
   end
 end

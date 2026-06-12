@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- HTML (and EPUB) conversion now renders Markdown directly from the Nokogiri
+  node tree, dropping the `reverse_markdown` dependency (it was only a thin
+  layer over Nokogiri).
+
 ## [0.1.0] - 2026-06-12
 
 ### Added
