@@ -1,0 +1,14 @@
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+
+# A gem does not lock its dependencies; applications resolve them.
+Gemfile.lock
+
+# rspec failure tracking
+.rspec_status

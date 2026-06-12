@@ -1,0 +1,50 @@
+module Markdownator
+  VERSION: String
+
+  def self.convert: (untyped source, **untyped options) -> Result
+  def self.convert_local: (String path, **untyped options) -> Result
+  def self.convert_stream: (untyped io, ?StreamInfo? stream_info, **untyped options) -> Result
+  def self.require_optional: (String gem_name, feature: String) -> void
+
+  class Error < StandardError
+  end
+
+  class UnsupportedFormatError < Error
+  end
+
+  class MissingDependencyError < Error
+  end
+
+  class FileConversionError < Error
+  end
+
+  class StreamInfo
+    attr_reader mimetype: String?
+    attr_reader extension: String?
+    attr_reader charset: String?
+    attr_reader filename: String?
+    attr_reader url: String?
+    attr_reader local_path: String?
+
+    def guessed_mimetype: () -> String?
+    def copy_with: (**untyped overrides) -> StreamInfo
+  end
+
+  class Result
+    attr_reader markdown: String
+    attr_reader title: String?
+    attr_reader metadata: Hash[untyped, untyped]
+
+    def to_s: () -> String
+    def text_content: () -> String
+  end
+
+  class Engine
+    attr_reader converters: Array[untyped]
+
+    def convert: (untyped source, **untyped options) -> Result
+    def convert_local: (String path, **untyped options) -> Result
+    def convert_url: (String url, **untyped options) -> Result
+    def convert_stream: (untyped io, ?StreamInfo? stream_info, **untyped options) -> Result
+  end
+end
