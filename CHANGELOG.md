@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- XLSX conversion now reads the workbook directly with rubyzip and Nokogiri
+  instead of `roo`, so every Office format (DOCX, XLSX, PPTX, EPUB) shares one
+  approach and the `roo` dependency is dropped.
+- Moved the HTML renderer to `Markdownator::Renderers::HtmlRenderer` (it renders
+  Markdown, it does not convert a source file).
+
 ## [0.1.1] - 2026-06-13
 
 ### Changed

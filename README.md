@@ -16,7 +16,7 @@ libraries **lazily**, so you only install the gems for the formats you actually 
 | HTML | `.html`, `.htm` | `nokogiri` |
 | XML | `.xml` | `nokogiri` |
 | Word | `.docx` | `rubyzip`, `nokogiri` |
-| Excel | `.xlsx` | `roo` |
+| Excel | `.xlsx` | `rubyzip`, `nokogiri` |
 | PowerPoint | `.pptx` | `rubyzip`, `nokogiri` |
 | PDF | `.pdf` | `pdf-reader` |
 | EPUB | `.epub` | `rubyzip`, `nokogiri` |
@@ -36,9 +36,8 @@ Then add the gems for the formats you need, e.g.:
 
 ```ruby
 gem "pdf-reader"      # PDF
-gem "roo"             # XLSX
-gem "rubyzip"         # DOCX, PPTX, EPUB, ZIP
-gem "nokogiri"        # HTML, XML, DOCX, PPTX, EPUB
+gem "rubyzip"         # DOCX, XLSX, PPTX, EPUB, ZIP
+gem "nokogiri"        # HTML, XML, DOCX, XLSX, PPTX, EPUB
 gem "exifr"           # image EXIF
 ```
 

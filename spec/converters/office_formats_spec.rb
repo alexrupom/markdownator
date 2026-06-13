@@ -17,12 +17,20 @@ RSpec.describe "Office and document converters" do
   end
 
   describe Markdownator::Converters::Xlsx do
-    it "renders one heading and table per sheet" do
+    it "renders one heading and table per sheet (inline strings)" do
       markdown = convert(Builders.xlsx_bytes, "xlsx").markdown
 
       expect(markdown).to include("## Data")
       expect(markdown).to include("| Name | Age |")
       expect(markdown).to include("| Alice | 30 |")
+    end
+
+    it "resolves cells from the shared string table" do
+      markdown = convert(Builders.xlsx_shared_strings_bytes, "xlsx").markdown
+
+      expect(markdown).to include("## Sales")
+      expect(markdown).to include("| Region | Total |")
+      expect(markdown).to include("| West | 42 |")
     end
   end
 

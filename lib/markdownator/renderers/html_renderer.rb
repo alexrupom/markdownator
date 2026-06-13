@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Markdownator
-  module Converters
+  module Renderers
     # Walks a Nokogiri HTML node tree and renders Markdown. A focused,
     # dependency-free replacement for reverse_markdown: HTML conversion needs
     # only Nokogiri (which reverse_markdown depended on anyway).

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "html_renderer"
+require_relative "../renderers/html_renderer"
 
 module Markdownator
   module Converters
@@ -20,7 +20,7 @@ module Markdownator
         Markdownator.require_optional("nokogiri", feature: "HTML conversion")
         doc = Nokogiri::HTML(html)
         root = doc.at_css("body") || doc.root || doc
-        HtmlRenderer.new.render(root)
+        Renderers::HtmlRenderer.new.render(root)
       end
 
       def self.extract_title(html)

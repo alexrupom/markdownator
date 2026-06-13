@@ -92,7 +92,6 @@ module Builders
           <Default Extension="xml" ContentType="application/xml"/>
           <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
           <Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
-          <Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>
         </Types>
       XML
       "_rels/.rels" => <<~XML,
@@ -114,10 +113,6 @@ module Builders
           <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
         </Relationships>
       XML
-      "xl/styles.xml" => <<~XML,
-        <?xml version="1.0" encoding="UTF-8"?>
-        <styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"/>
-      XML
       "xl/worksheets/sheet1.xml" => <<~XML
         <?xml version="1.0" encoding="UTF-8"?>
         <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
@@ -126,6 +121,39 @@ module Builders
             <row r="2"><c r="A2" t="inlineStr"><is><t>Alice</t></is></c><c r="B2"><v>30</v></c></row>
           </sheetData>
         </worksheet>
+      XML
+    )
+  end
+
+  # An .xlsx that stores text via the shared string table (what real Excel
+  # emits), exercising the `t="s"` cell lookup path.
+  def xlsx_shared_strings_bytes
+    ns = 'xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"'
+    rel = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+    pkg = "http://schemas.openxmlformats.org/package/2006/relationships"
+    zip_bytes(
+      "_rels/.rels" => <<~XML,
+        <Relationships xmlns="#{pkg}">
+          <Relationship Id="rId1" Type="#{rel}/officeDocument" Target="xl/workbook.xml"/>
+        </Relationships>
+      XML
+      "xl/workbook.xml" => <<~XML,
+        <workbook #{ns} xmlns:r="#{rel}">
+          <sheets><sheet name="Sales" sheetId="1" r:id="rId1"/></sheets>
+        </workbook>
+      XML
+      "xl/_rels/workbook.xml.rels" => <<~XML,
+        <Relationships xmlns="#{pkg}">
+          <Relationship Id="rId1" Type="#{rel}/worksheet" Target="worksheets/sheet1.xml"/>
+        </Relationships>
+      XML
+      "xl/sharedStrings.xml" =>
+        %(<sst #{ns}><si><t>Region</t></si><si><t>Total</t></si><si><t>West</t></si></sst>),
+      "xl/worksheets/sheet1.xml" => <<~XML
+        <worksheet #{ns}><sheetData>
+          <row r="1"><c r="A1" t="s"><v>0</v></c><c r="B1" t="s"><v>1</v></c></row>
+          <row r="2"><c r="A2" t="s"><v>2</v></c><c r="B2"><v>42</v></c></row>
+        </sheetData></worksheet>
       XML
     )
   end
