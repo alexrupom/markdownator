@@ -32,8 +32,9 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # Heavy format gems are intentionally NOT runtime dependencies. Each converter
-  # requires its gem lazily and raises a helpful error if it is missing, so apps
-  # install only what they need. The gems used to exercise every format in the
-  # test suite are declared as development dependencies in the Gemfile.
+  # Format libraries used by the converters.
+  spec.add_dependency "exifr", "~> 1.3" # image metadata
+  spec.add_dependency "nokogiri", "~> 1.15" # HTML, XML, DOCX, XLSX, PPTX, EPUB
+  spec.add_dependency "pdf-reader", "~> 2.12" # PDF
+  spec.add_dependency "rubyzip", "~> 2.3" # DOCX, XLSX, PPTX, EPUB, ZIP
 end

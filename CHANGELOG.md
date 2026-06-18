@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `nokogiri`, `rubyzip`, `pdf-reader`, and `exifr` are now runtime dependencies,
+  so every supported format works out of the box instead of requiring callers to
+  install the format gems themselves.
+
 ## [0.1.2] - 2026-06-13
 
 ### Changed

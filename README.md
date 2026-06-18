@@ -3,16 +3,16 @@
 Convert files into clean, LLM-friendly **Markdown**. Point Markdownator at a PDF,
 Office document, web page, archive, or image and get Markdown back.
 
-It uses a pluggable converter-registry architecture and loads heavy format
-libraries **lazily**, so you only install the gems for the formats you actually use.
+It uses a pluggable converter-registry architecture, and ships with everything it
+needs — every supported format works out of the box.
 
 ## Supported formats
 
-| Format | Extensions | Extra gem required |
-|--------|------------|--------------------|
-| Plain text / Markdown | `.txt`, `.md` | — (built in) |
-| CSV | `.csv` | — (built in) |
-| JSON | `.json` | — (built in) |
+| Format | Extensions | Backed by |
+|--------|------------|-----------|
+| Plain text / Markdown | `.txt`, `.md` | stdlib |
+| CSV | `.csv` | stdlib |
+| JSON | `.json` | stdlib |
 | HTML | `.html`, `.htm` | `nokogiri` |
 | XML | `.xml` | `nokogiri` |
 | Word | `.docx` | `rubyzip`, `nokogiri` |
@@ -21,10 +21,10 @@ libraries **lazily**, so you only install the gems for the formats you actually 
 | PDF | `.pdf` | `pdf-reader` |
 | EPUB | `.epub` | `rubyzip`, `nokogiri` |
 | ZIP (recurses) | `.zip` | `rubyzip` |
-| Images (metadata) | `.jpg`, `.png`, `.tiff`, … | `exifr` (for EXIF) |
+| Images (metadata) | `.jpg`, `.png`, `.tiff`, … | `exifr` |
 
-If a required gem is missing, the converter raises `Markdownator::MissingDependencyError`
-telling you exactly what to add to your `Gemfile`.
+These libraries (`nokogiri`, `rubyzip`, `pdf-reader`, `exifr`) are runtime
+dependencies, so they are installed with the gem automatically.
 
 ## Installation
 
@@ -32,13 +32,10 @@ telling you exactly what to add to your `Gemfile`.
 gem "markdownator"
 ```
 
-Then add the gems for the formats you need, e.g.:
+or:
 
-```ruby
-gem "pdf-reader"      # PDF
-gem "rubyzip"         # DOCX, XLSX, PPTX, EPUB, ZIP
-gem "nokogiri"        # HTML, XML, DOCX, XLSX, PPTX, EPUB
-gem "exifr"           # image EXIF
+```sh
+gem install markdownator
 ```
 
 ## Usage
